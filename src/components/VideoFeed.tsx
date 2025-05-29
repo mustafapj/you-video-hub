@@ -28,6 +28,14 @@ const VideoFeed = () => {
       comments: 412,
       isFollowing: false,
     },
+    {
+      id: '4',
+      username: 'music_producer',
+      description: '🎵 Live beat making session! Drop your favorite genre in comments 🔥',
+      likes: 9800,
+      comments: 187,
+      isFollowing: true,
+    },
   ];
 
   return (
