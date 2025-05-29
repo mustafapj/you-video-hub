@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import VideoFeed from '../components/VideoFeed';
 import ExplorePage from '../components/ExplorePage';
@@ -12,13 +13,25 @@ import LiveStreaming from '../components/LiveStreaming';
 import RandomCall from '../components/RandomCall';
 import SubscriptionTiers from '../components/SubscriptionTiers';
 import SupportSystem from '../components/SupportSystem';
+import SettingsPage from '../components/SettingsPage';
+import PolicyModal from '../components/PolicyModal';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [rightPanelOpen, setRightPanelOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
+  const [policyModal, setPolicyModal] = useState<{ isOpen: boolean; type: 'terms' | 'privacy' | 'community' | null }>({
+    isOpen: false,
+    type: null
+  });
 
   const renderActiveComponent = () => {
+    // Handle settings
+    if (showSettings) {
+      return <SettingsPage onBack={() => setShowSettings(false)} />;
+    }
+
     // Handle special features
     if (activeFeature === 'live') return <LiveStreaming />;
     if (activeFeature === 'randomCall') return <RandomCall />;
@@ -55,40 +68,13 @@ const Index = () => {
   return (
     <div className="bg-black min-h-screen relative">
       {/* App Header */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-black/90 backdrop-blur-lg border-b border-gray-800">
-        <div className="flex items-center justify-between px-4 py-3 max-w-md mx-auto">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
-            MJ
-          </h1>
-          <div className="flex items-center space-x-4">
-            {/* Feature Buttons */}
-            <button
-              onClick={() => setActiveFeature('live')}
-              className="bg-red-500 px-3 py-1 rounded-full text-white text-sm font-bold"
-            >
-              LIVE
-            </button>
-            <button
-              onClick={() => setActiveFeature('randomCall')}
-              className="bg-green-500 px-3 py-1 rounded-full text-white text-sm font-bold"
-            >
-              CALL
-            </button>
-            <button
-              onClick={() => setActiveFeature('subscriptions')}
-              className="bg-purple-500 px-3 py-1 rounded-full text-white text-sm font-bold"
-            >
-              PRO
-            </button>
-            <button
-              onClick={() => setRightPanelOpen(true)}
-              className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 flex items-center justify-center"
-            >
-              <span className="text-white text-sm font-bold">☰</span>
-            </button>
-          </div>
-        </div>
-      </header>
+      <Header 
+        onOpenPanel={() => setRightPanelOpen(true)}
+        onSetFeature={(feature) => {
+          setActiveFeature(feature);
+          setShowSettings(false);
+        }}
+      />
 
       {/* Main Content */}
       <main className="pt-16">
@@ -99,15 +85,36 @@ const Index = () => {
       <Navigation 
         activeTab={activeTab} 
         onTabChange={(tab) => {
-          setActiveTab(tab);
-          setActiveFeature(null);
+          if (tab === 'settings') {
+            setShowSettings(true);
+            setActiveFeature(null);
+          } else {
+            setActiveTab(tab);
+            setActiveFeature(null);
+            setShowSettings(false);
+          }
         }} 
       />
 
       {/* Right Slide Panel */}
       <RightSlidePanel 
         isOpen={rightPanelOpen} 
-        onClose={() => setRightPanelOpen(false)} 
+        onClose={() => setRightPanelOpen(false)}
+        onOpenSettings={() => {
+          setShowSettings(true);
+          setRightPanelOpen(false);
+        }}
+        onOpenPolicy={(type) => {
+          setPolicyModal({ isOpen: true, type });
+          setRightPanelOpen(false);
+        }}
+      />
+
+      {/* Policy Modal */}
+      <PolicyModal
+        isOpen={policyModal.isOpen}
+        onClose={() => setPolicyModal({ isOpen: false, type: null })}
+        type={policyModal.type!}
       />
 
       {/* Overlay for right panel */}
