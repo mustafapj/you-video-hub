@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
@@ -17,6 +16,7 @@ import SettingsPage from '../components/SettingsPage';
 import PolicyModal from '../components/PolicyModal';
 import WelcomeScreen from '../components/WelcomeScreen';
 import AuthScreen from '../components/AuthScreen';
+import BotSystem from '../components/BotSystem';
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<'welcome' | 'auth' | 'app'>('welcome');
@@ -60,6 +60,7 @@ const Index = () => {
     if (activeFeature === 'randomCall') return <RandomCall />;
     if (activeFeature === 'subscriptions') return <SubscriptionTiers />;
     if (activeFeature === 'support') return <SupportSystem />;
+    if (activeFeature === 'bot') return <BotSystem />;
 
     // Handle main tabs
     switch (activeTab) {
@@ -78,6 +79,8 @@ const Index = () => {
         return <NotificationsPage />;
       case 'profile':
         return <ProfilePage />;
+      case 'bot':
+        return <BotSystem />;
       default:
         return (
           <div>

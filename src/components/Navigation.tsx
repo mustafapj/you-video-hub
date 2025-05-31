@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Home, Search, Plus, Bell } from 'lucide-react';
+import { Home, Search, Plus, Bell, Bot } from 'lucide-react';
 
 interface NavigationProps {
   activeTab: string;
@@ -9,10 +9,11 @@ interface NavigationProps {
 
 const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   const tabs = [
-    { id: 'home', icon: Home, label: 'Home' },
-    { id: 'explore', icon: Search, label: 'Explore' },
-    { id: 'upload', icon: Plus, label: 'Upload' },
-    { id: 'notifications', icon: Bell, label: 'Notifications' },
+    { id: 'home', icon: Home, label: 'الرئيسية' },
+    { id: 'explore', icon: Search, label: 'استكشف' },
+    { id: 'upload', icon: Plus, label: 'رفع' },
+    { id: 'bot', icon: Bot, label: 'البوت' },
+    { id: 'notifications', icon: Bell, label: 'إشعارات' },
   ];
 
   return (
@@ -26,9 +27,10 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
               activeTab === id
                 ? 'text-pink-500'
                 : 'text-gray-400 hover:text-white'
-            } ${id === 'upload' ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white scale-110' : ''}`}
+            } ${id === 'upload' ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white scale-110' : ''} 
+            ${id === 'bot' ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white scale-105' : ''}`}
           >
-            <Icon size={id === 'upload' ? 24 : 20} />
+            <Icon size={id === 'upload' || id === 'bot' ? 24 : 20} />
             <span className="text-xs mt-1 font-medium">{label}</span>
           </button>
         ))}
