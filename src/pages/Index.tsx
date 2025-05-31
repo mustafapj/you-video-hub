@@ -15,8 +15,12 @@ import SubscriptionTiers from '../components/SubscriptionTiers';
 import SupportSystem from '../components/SupportSystem';
 import SettingsPage from '../components/SettingsPage';
 import PolicyModal from '../components/PolicyModal';
+import WelcomeScreen from '../components/WelcomeScreen';
+import AuthScreen from '../components/AuthScreen';
 
 const Index = () => {
+  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'auth' | 'app'>('welcome');
+  const [storageType, setStorageType] = useState<'cloud' | 'local' | null>(null);
   const [activeTab, setActiveTab] = useState('home');
   const [rightPanelOpen, setRightPanelOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
@@ -25,6 +29,25 @@ const Index = () => {
     isOpen: false,
     type: null
   });
+
+  const handleWelcomeAccept = (selectedStorageType: 'cloud' | 'local') => {
+    setStorageType(selectedStorageType);
+    setCurrentScreen('auth');
+  };
+
+  const handleAuthComplete = () => {
+    setCurrentScreen('app');
+  };
+
+  // Show welcome screen
+  if (currentScreen === 'welcome') {
+    return <WelcomeScreen onAccept={handleWelcomeAccept} />;
+  }
+
+  // Show auth screen
+  if (currentScreen === 'auth' && storageType) {
+    return <AuthScreen storageType={storageType} onAuthComplete={handleAuthComplete} />;
+  }
 
   const renderActiveComponent = () => {
     // Handle settings
@@ -85,14 +108,9 @@ const Index = () => {
       <Navigation 
         activeTab={activeTab} 
         onTabChange={(tab) => {
-          if (tab === 'settings') {
-            setShowSettings(true);
-            setActiveFeature(null);
-          } else {
-            setActiveTab(tab);
-            setActiveFeature(null);
-            setShowSettings(false);
-          }
+          setActiveTab(tab);
+          setActiveFeature(null);
+          setShowSettings(false);
         }} 
       />
 

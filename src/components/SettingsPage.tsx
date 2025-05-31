@@ -7,33 +7,43 @@ interface SettingsPageProps {
 }
 
 const SettingsPage = ({ onBack }: SettingsPageProps) => {
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState('ar');
+
+  const languages = [
+    { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+    { code: 'en', name: 'English', flag: '🇺🇸' },
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'es', name: 'Español', flag: '🇪🇸' },
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+    { code: 'ru', name: 'Русский', flag: '🇷🇺' }
+  ];
 
   const settingsItems = [
     {
       icon: User,
-      title: language === 'en' ? 'Profile' : 'الملف الشخصي',
-      subtitle: language === 'en' ? 'Edit your profile information' : 'تعديل معلومات الملف الشخصي',
+      title: language === 'ar' ? 'الملف الشخصي' : 'Profile',
+      subtitle: language === 'ar' ? 'تعديل معلومات الملف الشخصي' : 'Edit your profile information',
     },
     {
       icon: Shield,
-      title: language === 'en' ? 'Security' : 'الأمان',
-      subtitle: language === 'en' ? 'Password, 2FA, and account security' : 'كلمة المرور والمصادقة الثنائية وأمان الحساب',
+      title: language === 'ar' ? 'الأمان' : 'Security',
+      subtitle: language === 'ar' ? 'كلمة المرور والمصادقة الثنائية وأمان الحساب' : 'Password, 2FA, and account security',
     },
     {
       icon: Lock,
-      title: language === 'en' ? 'Privacy' : 'الخصوصية',
-      subtitle: language === 'en' ? 'Control who can see your content' : 'التحكم في من يمكنه رؤية المحتوى الخاص بك',
+      title: language === 'ar' ? 'الخصوصية' : 'Privacy',
+      subtitle: language === 'ar' ? 'التحكم في من يمكنه رؤية المحتوى الخاص بك' : 'Control who can see your content',
     },
     {
       icon: FileText,
-      title: language === 'en' ? 'Terms and Conditions' : 'الشروط والأحكام',
-      subtitle: language === 'en' ? 'Read our terms of service' : 'اقرأ شروط الخدمة',
+      title: language === 'ar' ? 'الشروط والأحكام' : 'Terms and Conditions',
+      subtitle: language === 'ar' ? 'اقرأ شروط الخدمة' : 'Read our terms of service',
     },
     {
       icon: FileText,
-      title: language === 'en' ? 'Privacy Policy' : 'سياسة الخصوصية',
-      subtitle: language === 'en' ? 'How we handle your data' : 'كيف نتعامل مع بياناتك',
+      title: language === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy',
+      subtitle: language === 'ar' ? 'كيف نتعامل مع بياناتك' : 'How we handle your data',
     },
   ];
 
@@ -46,7 +56,7 @@ const SettingsPage = ({ onBack }: SettingsPageProps) => {
             <ArrowLeft className="w-6 h-6 text-white" />
           </button>
           <h1 className="text-white text-xl font-bold">
-            {language === 'en' ? 'Settings' : 'الإعدادات'}
+            {language === 'ar' ? 'الإعدادات' : 'Settings'}
           </h1>
         </div>
 
@@ -56,27 +66,23 @@ const SettingsPage = ({ onBack }: SettingsPageProps) => {
             <div className="flex items-center justify-between mb-3">
               <Globe className="w-5 h-5 text-pink-500" />
               <span className="text-white font-medium">
-                {language === 'en' ? 'Language' : 'اللغة'}
+                {language === 'ar' ? 'اللغة' : 'Language'}
               </span>
               <div></div>
             </div>
-            <div className="flex space-x-2">
-              <button
-                onClick={() => setLanguage('en')}
-                className={`px-4 py-2 rounded-lg ${
-                  language === 'en' ? 'bg-pink-500 text-white' : 'bg-gray-700 text-gray-300'
-                }`}
-              >
-                English
-              </button>
-              <button
-                onClick={() => setLanguage('ar')}
-                className={`px-4 py-2 rounded-lg ${
-                  language === 'ar' ? 'bg-pink-500 text-white' : 'bg-gray-700 text-gray-300'
-                }`}
-              >
-                العربية
-              </button>
+            <div className="grid grid-cols-2 gap-2">
+              {languages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => setLanguage(lang.code)}
+                  className={`px-3 py-2 rounded-lg flex items-center space-x-2 ${
+                    language === lang.code ? 'bg-pink-500 text-white' : 'bg-gray-700 text-gray-300'
+                  }`}
+                >
+                  <span>{lang.flag}</span>
+                  <span className="text-sm">{lang.name}</span>
+                </button>
+              ))}
             </div>
           </div>
 

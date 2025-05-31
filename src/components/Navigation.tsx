@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Home, Search, Plus, Bell, Settings } from 'lucide-react';
+import { Home, Search, Plus, Bell } from 'lucide-react';
 
 interface NavigationProps {
   activeTab: string;
@@ -13,7 +13,6 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
     { id: 'explore', icon: Search, label: 'Explore' },
     { id: 'upload', icon: Plus, label: 'Upload' },
     { id: 'notifications', icon: Bell, label: 'Notifications' },
-    { id: 'settings', icon: Settings, label: 'Settings' },
   ];
 
   return (

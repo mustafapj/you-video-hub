@@ -38,10 +38,10 @@ const Header = ({ onOpenPanel, onSetFeature }: HeaderProps) => {
           </button>
         </div>
 
-        {/* Center - MJ Logo */}
+        {/* Center - YOU Logo */}
         <div className="flex-1 flex justify-center">
           <div className="bg-gradient-to-r from-pink-500 to-purple-600 p-2 rounded-lg">
-            <h1 className="text-white text-xl font-bold tracking-wider">MJ</h1>
+            <h1 className="text-white text-xl font-bold tracking-wider">YOU</h1>
           </div>
         </div>
 
