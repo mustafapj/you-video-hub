@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { User, Mail, Upload, Calendar, Globe } from 'lucide-react';
+import { User, Mail, Upload, Calendar, Globe, Phone } from 'lucide-react';
 
 interface AuthScreenProps {
   storageType: 'cloud' | 'local';
@@ -9,9 +9,11 @@ interface AuthScreenProps {
 
 const AuthScreen = ({ storageType, onAuthComplete }: AuthScreenProps) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [authMethod, setAuthMethod] = useState<'phone' | 'email'>('phone');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    phoneNumber: '',
     username: '',
     fullName: '',
     birthDate: '',
@@ -28,10 +30,20 @@ const AuthScreen = ({ storageType, onAuthComplete }: AuthScreenProps) => {
     return 'YOU' + Math.random().toString(36).substr(2, 8).toUpperCase();
   };
 
+  const validatePassword = (password: string) => {
+    return password.length >= 8;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!isLogin) {
+      // Validate password for registration
+      if (!validatePassword(formData.password)) {
+        alert('كلمة المرور يجب أن تتكون من 8 أرقام أو أكثر');
+        return;
+      }
+      
       // Generate unique user ID for new accounts
       const userID = generateUserID();
       console.log('Generated User ID:', userID);
@@ -41,6 +53,7 @@ const AuthScreen = ({ storageType, onAuthComplete }: AuthScreenProps) => {
         ...formData,
         userID,
         storageType,
+        authMethod,
         createdAt: new Date().toISOString()
       };
       
@@ -48,6 +61,12 @@ const AuthScreen = ({ storageType, onAuthComplete }: AuthScreenProps) => {
         localStorage.setItem('YOU_userData', JSON.stringify(userData));
       }
       // For cloud storage, this would be sent to the server
+    } else {
+      // Validate password for login
+      if (!validatePassword(formData.password)) {
+        alert('كلمة المرور يجب أن تتكون من 8 أرقام أو أكثر');
+        return;
+      }
     }
     
     onAuthComplete();
@@ -69,34 +88,82 @@ const AuthScreen = ({ storageType, onAuthComplete }: AuthScreenProps) => {
           </p>
         </div>
 
+        {/* Authentication Method Toggle */}
+        <div className="flex bg-gray-800 rounded-lg p-1 mb-6">
+          <button
+            type="button"
+            onClick={() => setAuthMethod('phone')}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+              authMethod === 'phone' 
+                ? 'bg-pink-500 text-white' 
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            رقم الهاتف
+          </button>
+          <button
+            type="button"
+            onClick={() => setAuthMethod('email')}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+              authMethod === 'email' 
+                ? 'bg-pink-500 text-white' 
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            البريد الإلكتروني
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Email */}
-          <div>
-            <label className="block text-gray-300 text-sm mb-2">البريد الإلكتروني</label>
-            <div className="relative">
-              <Mail className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
-                className="w-full bg-gray-800 text-white rounded-lg py-3 pr-10 pl-4 focus:ring-2 focus:ring-pink-500 focus:outline-none"
-                placeholder="example@email.com"
-                required
-              />
+          {/* Primary Auth Field */}
+          {authMethod === 'phone' ? (
+            <div>
+              <label className="block text-gray-300 text-sm mb-2">رقم الهاتف</label>
+              <div className="relative">
+                <Phone className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                <input
+                  type="tel"
+                  value={formData.phoneNumber}
+                  onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})}
+                  className="w-full bg-gray-800 text-white rounded-lg py-3 pr-10 pl-4 focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                  placeholder="+966501234567"
+                  required
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div>
+              <label className="block text-gray-300 text-sm mb-2">البريد الإلكتروني (اختياري)</label>
+              <div className="relative">
+                <Mail className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  className="w-full bg-gray-800 text-white rounded-lg py-3 pr-10 pl-4 focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                  placeholder="example@email.com"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Password */}
           <div>
-            <label className="block text-gray-300 text-sm mb-2">كلمة المرور</label>
+            <label className="block text-gray-300 text-sm mb-2">
+              كلمة المرور (8 أرقام أو أكثر)
+            </label>
             <input
               type="password"
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
               className="w-full bg-gray-800 text-white rounded-lg py-3 px-4 focus:ring-2 focus:ring-pink-500 focus:outline-none"
               placeholder="••••••••"
+              minLength={8}
               required
             />
+            <p className="text-gray-500 text-xs mt-1">
+              يجب أن تتكون كلمة المرور من 8 أرقام على الأقل
+            </p>
           </div>
 
           {/* Registration fields */}

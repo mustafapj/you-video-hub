@@ -18,6 +18,7 @@ import PolicyModal from '../components/PolicyModal';
 import WelcomeScreen from '../components/WelcomeScreen';
 import AuthScreen from '../components/AuthScreen';
 import MessagesPage from '../components/MessagesPage';
+import BotSystem from '../components/BotSystem';
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<'welcome' | 'auth' | 'app'>('welcome');
@@ -67,6 +68,7 @@ const Index = () => {
     if (activeFeature === 'randomCall') return <RandomCall />;
     if (activeFeature === 'subscriptions') return <SubscriptionTiers />;
     if (activeFeature === 'support') return <SupportSystem />;
+    if (activeFeature === 'bot') return <BotSystem />;
 
     // Handle main tabs
     switch (activeTab) {

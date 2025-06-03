@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { Bot, Eye, EyeOff, Save, ArrowLeft, Info, Settings, Zap } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Bot, Eye, EyeOff, Save, ArrowLeft, Info, Settings, Zap, Copy } from 'lucide-react';
 
 interface BotCreationFormProps {
   onBack: () => void;
@@ -28,6 +27,20 @@ const BotCreationForm = ({ onBack, botType }: BotCreationFormProps) => {
       customCommands: true
     }
   });
+
+  // Generate automatic token when component mounts
+  useEffect(() => {
+    const generateBotToken = () => {
+      const botId = Math.floor(Math.random() * 9000000000) + 1000000000; // 10 digit number
+      const randomString = Math.random().toString(36).substring(2, 37); // 35 char string
+      return `${botId}:${randomString}`;
+    };
+
+    setFormData(prev => ({
+      ...prev,
+      botToken: generateBotToken()
+    }));
+  }, []);
 
   const getBotTypeInfo = () => {
     const types = {
@@ -61,6 +74,10 @@ const BotCreationForm = ({ onBack, botType }: BotCreationFormProps) => {
   };
 
   const botInfo = getBotTypeInfo();
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,25 +142,32 @@ const BotCreationForm = ({ onBack, botType }: BotCreationFormProps) => {
             </div>
 
             <div className="mt-4">
-              <label className="block text-gray-300 text-sm mb-2">توكن البوت *</label>
+              <label className="block text-gray-300 text-sm mb-2">توكن البوت (تم إنشاؤه تلقائياً)</label>
               <div className="relative">
                 <input
                   type={showToken ? "text" : "password"}
                   value={formData.botToken}
-                  onChange={(e) => setFormData({...formData, botToken: e.target.value})}
-                  placeholder="1234567890:ABCdefGHIjklMNOpqrsTUVwxyz"
-                  className="w-full bg-gray-800 text-white rounded-lg py-3 px-4 pr-12 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
+                  readOnly
+                  className="w-full bg-gray-800 text-white rounded-lg py-3 px-4 pr-20 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowToken(!showToken)}
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-                >
-                  {showToken ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 flex space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => copyToClipboard(formData.botToken)}
+                    className="text-gray-400 hover:text-white"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowToken(!showToken)}
+                    className="text-gray-400 hover:text-white"
+                  >
+                    {showToken ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
-              <p className="text-gray-500 text-xs mt-1">احصل على التوكن من @BotFather في تليجرام</p>
+              <p className="text-gray-500 text-xs mt-1">تم إنشاء التوكن تلقائياً - يمكنك نسخه واستخدامه</p>
             </div>
 
             <div className="mt-4">

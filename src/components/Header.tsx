@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Bot } from 'lucide-react';
 
 interface HeaderProps {
   onOpenPanel: () => void;
@@ -29,6 +30,12 @@ const Header = ({ onOpenPanel, onSetFeature }: HeaderProps) => {
             className="bg-purple-500 px-2 py-1 rounded-full text-white text-xs font-bold"
           >
             PRO
+          </button>
+          <button
+            onClick={() => onSetFeature('bot')}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-full flex items-center justify-center"
+          >
+            <Bot className="w-4 h-4 text-white" />
           </button>
           <button
             onClick={onOpenPanel}
