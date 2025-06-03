@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
@@ -16,7 +17,7 @@ import SettingsPage from '../components/SettingsPage';
 import PolicyModal from '../components/PolicyModal';
 import WelcomeScreen from '../components/WelcomeScreen';
 import AuthScreen from '../components/AuthScreen';
-import BotSystem from '../components/BotSystem';
+import MessagesPage from '../components/MessagesPage';
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<'welcome' | 'auth' | 'app'>('welcome');
@@ -25,6 +26,7 @@ const Index = () => {
   const [rightPanelOpen, setRightPanelOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
   const [policyModal, setPolicyModal] = useState<{ isOpen: boolean; type: 'terms' | 'privacy' | 'community' | null }>({
     isOpen: false,
     type: null
@@ -55,12 +57,16 @@ const Index = () => {
       return <SettingsPage onBack={() => setShowSettings(false)} />;
     }
 
+    // Handle messages page
+    if (showMessages) {
+      return <MessagesPage />;
+    }
+
     // Handle special features
     if (activeFeature === 'live') return <LiveStreaming />;
     if (activeFeature === 'randomCall') return <RandomCall />;
     if (activeFeature === 'subscriptions') return <SubscriptionTiers />;
     if (activeFeature === 'support') return <SupportSystem />;
-    if (activeFeature === 'bot') return <BotSystem />;
 
     // Handle main tabs
     switch (activeTab) {
@@ -80,7 +86,7 @@ const Index = () => {
       case 'profile':
         return <ProfilePage />;
       case 'bot':
-        return <BotSystem />;
+        return <MessagesPage />;
       default:
         return (
           <div>
@@ -99,6 +105,7 @@ const Index = () => {
         onSetFeature={(feature) => {
           setActiveFeature(feature);
           setShowSettings(false);
+          setShowMessages(false);
         }}
       />
 
@@ -114,6 +121,7 @@ const Index = () => {
           setActiveTab(tab);
           setActiveFeature(null);
           setShowSettings(false);
+          setShowMessages(false);
         }} 
       />
 
@@ -123,6 +131,10 @@ const Index = () => {
         onClose={() => setRightPanelOpen(false)}
         onOpenSettings={() => {
           setShowSettings(true);
+          setRightPanelOpen(false);
+        }}
+        onOpenMessages={() => {
+          setShowMessages(true);
           setRightPanelOpen(false);
         }}
         onOpenPolicy={(type) => {

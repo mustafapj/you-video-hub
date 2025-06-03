@@ -1,6 +1,6 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, Send, ArrowLeft, Settings, Star } from 'lucide-react';
+import BotCreationForm from './BotCreationForm';
 
 interface Message {
   id: string;
@@ -18,6 +18,8 @@ const BotChat = ({ onBack }: BotChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [currentStep, setCurrentStep] = useState('welcome');
+  const [showCreationForm, setShowCreationForm] = useState(false);
+  const [selectedBotType, setSelectedBotType] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -86,35 +88,13 @@ const BotChat = ({ onBack }: BotChatProps) => {
           break;
 
         case '/create_group_bot':
-          setCurrentStep('group_bot_setup');
-          addBotMessage("اختيار ممتاز! بوت إدارة المجموعات 👮‍♂️\n\nالميزات المتاحة:", [
-            { text: "🛡️ نظام الحماية التلقائي", command: "/setup_protection" },
-            { text: "⚠️ نظام التحذيرات", command: "/setup_warnings" },
-            { text: "💬 رسائل الترحيب", command: "/setup_welcome" },
-            { text: "🚫 مكافحة السبام", command: "/setup_antispam" },
-            { text: "📝 نظام التقارير", command: "/setup_reports" },
-            { text: "✅ تفعيل الكل", command: "/enable_all_group" }
-          ]);
-          break;
-
         case '/create_channel_bot':
-          addBotMessage("بوت القناة 📢\n\nاختر الميزات المطلوبة:", [
-            { text: "📅 النشر المجدول", command: "/setup_scheduler" },
-            { text: "📊 إحصائيات القناة", command: "/setup_analytics" },
-            { text: "🔗 إدارة الروابط", command: "/setup_links" },
-            { text: "👥 إدارة المشتركين", command: "/setup_subscribers" },
-            { text: "🎨 قوالب المنشورات", command: "/setup_templates" }
-          ]);
-          break;
-
         case '/create_music_bot':
-          addBotMessage("بوت الموسيقى 🎵\n\nالميزات المتاحة:", [
-            { text: "🎶 تشغيل من يوتيوب", command: "/setup_youtube" },
-            { text: "🎧 قوائم التشغيل", command: "/setup_playlists" },
-            { text: "🔊 التحكم في الصوت", command: "/setup_volume" },
-            { text: "⏯️ التحكم في التشغيل", command: "/setup_controls" },
-            { text: "🎤 تسجيل الصوت", command: "/setup_recording" }
-          ]);
+        case '/create_game_bot':
+        case '/create_business_bot':
+          const botType = command.replace('/create_', '');
+          setSelectedBotType(botType);
+          setShowCreationForm(true);
           break;
 
         case '/setup_protection':
@@ -192,6 +172,15 @@ const BotChat = ({ onBack }: BotChatProps) => {
       handleSendMessage();
     }
   };
+
+  if (showCreationForm) {
+    return (
+      <BotCreationForm 
+        onBack={() => setShowCreationForm(false)} 
+        botType={selectedBotType}
+      />
+    );
+  }
 
   return (
     <div className="bg-black min-h-screen flex flex-col">

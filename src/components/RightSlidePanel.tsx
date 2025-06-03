@@ -7,9 +7,10 @@ interface RightSlidePanelProps {
   onClose: () => void;
   onOpenSettings?: () => void;
   onOpenPolicy?: (type: 'terms' | 'privacy' | 'community') => void;
+  onOpenMessages?: () => void;
 }
 
-const RightSlidePanel = ({ isOpen, onClose, onOpenSettings, onOpenPolicy }: RightSlidePanelProps) => {
+const RightSlidePanel = ({ isOpen, onClose, onOpenSettings, onOpenPolicy, onOpenMessages }: RightSlidePanelProps) => {
   const menuItems = [
     { icon: MessageCircle, label: 'Direct Messages', count: 3, action: 'messages' },
     { icon: FileText, label: 'Pages', count: 0, action: 'pages' },
@@ -29,6 +30,8 @@ const RightSlidePanel = ({ isOpen, onClose, onOpenSettings, onOpenPolicy }: Righ
   const handleMenuClick = (action: string) => {
     if (action === 'settings' && onOpenSettings) {
       onOpenSettings();
+    } else if (action === 'messages' && onOpenMessages) {
+      onOpenMessages();
     }
     // Handle other menu actions here
   };
