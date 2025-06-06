@@ -28,17 +28,25 @@ const BotCreationForm = ({ onBack, botType }: BotCreationFormProps) => {
     }
   });
 
-  // Generate automatic token when component mounts
+  // Generate Telegram-style token when component mounts
   useEffect(() => {
-    const generateBotToken = () => {
-      const botId = Math.floor(Math.random() * 9000000000) + 1000000000; // 10 digit number
-      const randomString = Math.random().toString(36).substring(2, 37); // 35 char string
-      return `${botId}:${randomString}`;
+    const generateTelegramToken = () => {
+      // Bot ID: 10 digit number starting with high digits
+      const botId = Math.floor(Math.random() * 2000000000) + 1000000000;
+      
+      // Secret part: 35 characters (mix of letters, numbers, and some special chars)
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
+      let secret = '';
+      for (let i = 0; i < 35; i++) {
+        secret += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      
+      return `${botId}:${secret}`;
     };
 
     setFormData(prev => ({
       ...prev,
-      botToken: generateBotToken()
+      botToken: generateTelegramToken()
     }));
   }, []);
 
@@ -142,32 +150,41 @@ const BotCreationForm = ({ onBack, botType }: BotCreationFormProps) => {
             </div>
 
             <div className="mt-4">
-              <label className="block text-gray-300 text-sm mb-2">توكن البوت (تم إنشاؤه تلقائياً)</label>
+              <label className="block text-gray-300 text-sm mb-2">
+                توكن البوت (نمط تليجرام - تم إنشاؤه تلقائياً)
+              </label>
               <div className="relative">
                 <input
                   type={showToken ? "text" : "password"}
                   value={formData.botToken}
                   readOnly
-                  className="w-full bg-gray-800 text-white rounded-lg py-3 px-4 pr-20 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full bg-gray-800 text-white rounded-lg py-3 px-4 pr-20 focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono text-sm"
                 />
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 flex space-x-2">
                   <button
                     type="button"
                     onClick={() => copyToClipboard(formData.botToken)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-gray-400 hover:text-white transition-colors"
+                    title="نسخ التوكن"
                   >
                     <Copy className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowToken(!showToken)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-gray-400 hover:text-white transition-colors"
+                    title={showToken ? "إخفاء التوكن" : "إظهار التوكن"}
                   >
                     {showToken ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
-              <p className="text-gray-500 text-xs mt-1">تم إنشاء التوكن تلقائياً - يمكنك نسخه واستخدامه</p>
+              <div className="mt-2 p-3 bg-blue-900/20 rounded-lg border border-blue-500/30">
+                <p className="text-blue-400 text-xs flex items-center">
+                  <Info className="w-4 h-4 mr-2" />
+                  هذا التوكن يستخدم نفس صيغة تليجرام: معرف البوت : الرمز السري (10 أرقام : 35 حرف)
+                </p>
+              </div>
             </div>
 
             <div className="mt-4">

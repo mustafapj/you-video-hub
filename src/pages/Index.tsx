@@ -19,6 +19,7 @@ import WelcomeScreen from '../components/WelcomeScreen';
 import AuthScreen from '../components/AuthScreen';
 import MessagesPage from '../components/MessagesPage';
 import BotSystem from '../components/BotSystem';
+import BotFather from '../components/BotFather';
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<'welcome' | 'auth' | 'app'>('welcome');
@@ -69,6 +70,8 @@ const Index = () => {
     if (activeFeature === 'subscriptions') return <SubscriptionTiers />;
     if (activeFeature === 'support') return <SupportSystem />;
     if (activeFeature === 'bot') return <BotSystem />;
+    if (activeFeature === 'botfather') return <BotFather />;
+    if (activeFeature === 'profile') return <ProfilePage />;
 
     // Handle main tabs
     switch (activeTab) {
@@ -87,8 +90,6 @@ const Index = () => {
         return <NotificationsPage />;
       case 'profile':
         return <ProfilePage />;
-      case 'bot':
-        return <MessagesPage />;
       default:
         return (
           <div>
@@ -104,11 +105,6 @@ const Index = () => {
       {/* App Header */}
       <Header 
         onOpenPanel={() => setRightPanelOpen(true)}
-        onSetFeature={(feature) => {
-          setActiveFeature(feature);
-          setShowSettings(false);
-          setShowMessages(false);
-        }}
       />
 
       {/* Main Content */}
@@ -141,6 +137,12 @@ const Index = () => {
         }}
         onOpenPolicy={(type) => {
           setPolicyModal({ isOpen: true, type });
+          setRightPanelOpen(false);
+        }}
+        onSetFeature={(feature) => {
+          setActiveFeature(feature);
+          setShowSettings(false);
+          setShowMessages(false);
           setRightPanelOpen(false);
         }}
       />

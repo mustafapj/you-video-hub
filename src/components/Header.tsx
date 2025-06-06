@@ -1,42 +1,16 @@
 
 import React from 'react';
-import { Bot } from 'lucide-react';
 
 interface HeaderProps {
   onOpenPanel: () => void;
-  onSetFeature: (feature: string | null) => void;
 }
 
-const Header = ({ onOpenPanel, onSetFeature }: HeaderProps) => {
+const Header = ({ onOpenPanel }: HeaderProps) => {
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-black/90 backdrop-blur-lg border-b border-gray-800">
       <div className="flex items-center justify-between px-4 py-3 max-w-md mx-auto">
-        {/* Left side - Feature buttons and menu */}
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={() => onSetFeature('live')}
-            className="bg-red-500 px-2 py-1 rounded-full text-white text-xs font-bold"
-          >
-            LIVE
-          </button>
-          <button
-            onClick={() => onSetFeature('randomCall')}
-            className="bg-green-500 px-2 py-1 rounded-full text-white text-xs font-bold"
-          >
-            CALL
-          </button>
-          <button
-            onClick={() => onSetFeature('subscriptions')}
-            className="bg-purple-500 px-2 py-1 rounded-full text-white text-xs font-bold"
-          >
-            PRO
-          </button>
-          <button
-            onClick={() => onSetFeature('bot')}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-full flex items-center justify-center"
-          >
-            <Bot className="w-4 h-4 text-white" />
-          </button>
+        {/* Left side - Menu button */}
+        <div className="flex items-center">
           <button
             onClick={onOpenPanel}
             className="w-7 h-7 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 flex items-center justify-center"
@@ -53,7 +27,7 @@ const Header = ({ onOpenPanel, onSetFeature }: HeaderProps) => {
         </div>
 
         {/* Right side - placeholder for balance */}
-        <div className="w-20"></div>
+        <div className="w-7"></div>
       </div>
     </header>
   );
