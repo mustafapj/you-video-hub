@@ -88,8 +88,6 @@ const Index = () => {
         return <UploadPage />;
       case 'notifications':
         return <NotificationsPage />;
-      case 'profile':
-        return <ProfilePage />;
       default:
         return (
           <div>
@@ -112,7 +110,7 @@ const Index = () => {
         {renderActiveComponent()}
       </main>
 
-      {/* Navigation */}
+      {/* Navigation - removed profile tab */}
       <Navigation 
         activeTab={activeTab} 
         onTabChange={(tab) => {

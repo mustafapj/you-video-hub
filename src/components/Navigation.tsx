@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Home, Search, Plus, Bell, User } from 'lucide-react';
+import { Home, Search, Plus, Bell } from 'lucide-react';
 
 interface NavigationProps {
   activeTab: string;
@@ -13,24 +13,29 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
     { id: 'explore', icon: Search, label: 'استكشف' },
     { id: 'upload', icon: Plus, label: 'رفع' },
     { id: 'notifications', icon: Bell, label: 'إشعارات' },
-    { id: 'profile', icon: User, label: 'الملف الشخصي' },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-lg border-t border-gray-800 z-50">
-      <div className="flex justify-around items-center py-2 px-4 max-w-md mx-auto">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur-lg border-t border-gray-800">
+      <div className="flex items-center justify-around px-2 py-2 max-w-md mx-auto">
         {tabs.map(({ id, icon: Icon, label }) => (
           <button
             key={id}
             onClick={() => onTabChange(id)}
-            className={`flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 ${
+            className={`flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 ${
               activeTab === id
-                ? 'text-pink-500'
-                : 'text-gray-400 hover:text-white'
-            } ${id === 'upload' ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white scale-110' : ''}`}
+                ? 'text-pink-500 bg-pink-500/10'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+            }`}
           >
-            <Icon size={id === 'upload' ? 24 : 20} />
-            <span className="text-xs mt-1 font-medium">{label}</span>
+            {id === 'upload' ? (
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 flex items-center justify-center">
+                <Icon size={18} className="text-white" />
+              </div>
+            ) : (
+              <Icon size={20} />
+            )}
+            <span className="text-xs font-medium">{label}</span>
           </button>
         ))}
       </div>
