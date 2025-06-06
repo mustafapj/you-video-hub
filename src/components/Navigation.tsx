@@ -1,13 +1,15 @@
 
 import React from 'react';
-import { Home, Search, Plus, Bell } from 'lucide-react';
+import { Home, Search, Plus, Bell, Menu } from 'lucide-react';
 
 interface NavigationProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  onOpenPanel: () => void;
+  menuNotifications?: number;
 }
 
-const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
+const Navigation = ({ activeTab, onTabChange, onOpenPanel, menuNotifications = 0 }: NavigationProps) => {
   const tabs = [
     { id: 'home', icon: Home, label: 'الرئيسية' },
     { id: 'explore', icon: Search, label: 'استكشف' },
@@ -38,6 +40,20 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
             <span className="text-xs font-medium">{label}</span>
           </button>
         ))}
+        
+        {/* Menu button with notifications */}
+        <button
+          onClick={onOpenPanel}
+          className="flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 text-gray-400 hover:text-white hover:bg-gray-800/50 relative"
+        >
+          <Menu size={20} />
+          {menuNotifications > 0 && (
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
+              {menuNotifications}
+            </span>
+          )}
+          <span className="text-xs font-medium">القائمة</span>
+        </button>
       </div>
     </nav>
   );

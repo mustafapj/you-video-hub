@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import VideoFeed from '../components/VideoFeed';
@@ -20,6 +20,9 @@ import AuthScreen from '../components/AuthScreen';
 import MessagesPage from '../components/MessagesPage';
 import BotSystem from '../components/BotSystem';
 import BotFather from '../components/BotFather';
+import { DataManager } from '../utils/dataStorage';
+import { PermissionManager } from '../utils/permissions';
+import { FileManager } from '../utils/fileManager';
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<'welcome' | 'auth' | 'app'>('welcome');
@@ -29,18 +32,52 @@ const Index = () => {
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
+  const [menuNotifications, setMenuNotifications] = useState(2); // إشعارات القائمة
   const [policyModal, setPolicyModal] = useState<{ isOpen: boolean; type: 'terms' | 'privacy' | 'community' | null }>({
     isOpen: false,
     type: null
   });
 
-  const handleWelcomeAccept = (selectedStorageType: 'cloud' | 'local') => {
+  useEffect(() => {
+    // تهيئة النظام
+    const initializeApp = async () => {
+      const dataManager = DataManager.getInstance();
+      const permissionManager = PermissionManager.getInstance();
+      const fileManager = FileManager.getInstance();
+      
+      // فحص الجلسة الحالية
+      if (dataManager.isSessionValid()) {
+        setCurrentScreen('app');
+      }
+      
+      // تحميل الملفات المحفوظة
+      fileManager.loadFilesFromStorage();
+      
+      // طلب الصلاحيات الأساسية
+      await permissionManager.requestNotificationPermission();
+    };
+    
+    initializeApp();
+  }, []);
+
+  const handleWelcomeAccept = async (selectedStorageType: 'cloud' | 'local') => {
     setStorageType(selectedStorageType);
     setCurrentScreen('auth');
+    
+    // طلب الصلاحيات عند قبول الشروط
+    const permissionManager = PermissionManager.getInstance();
+    await permissionManager.requestAllPermissions();
   };
 
   const handleAuthComplete = () => {
     setCurrentScreen('app');
+    
+    // إرسال إشعار ترحيب
+    const permissionManager = PermissionManager.getInstance();
+    permissionManager.sendNotification(
+      'مرحباً بك في YOU!',
+      'تم إنشاء حسابك بنجاح. ابدأ بمشاركة المحتوى!'
+    );
   };
 
   // Show welcome screen
@@ -110,7 +147,7 @@ const Index = () => {
         {renderActiveComponent()}
       </main>
 
-      {/* Navigation - removed profile tab */}
+      {/* Navigation with menu notifications */}
       <Navigation 
         activeTab={activeTab} 
         onTabChange={(tab) => {
@@ -118,7 +155,9 @@ const Index = () => {
           setActiveFeature(null);
           setShowSettings(false);
           setShowMessages(false);
-        }} 
+        }}
+        onOpenPanel={() => setRightPanelOpen(true)}
+        menuNotifications={menuNotifications}
       />
 
       {/* Right Slide Panel */}
