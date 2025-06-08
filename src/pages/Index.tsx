@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
@@ -110,7 +109,7 @@ const Index = () => {
     switch (activeTab) {
       case 'home':
         return (
-          <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-cyan-900 min-h-screen">
+          <div className="bg-gradient-to-br from-blue-900 via-purple-900 to-cyan-900 min-h-screen">
             <Stories />
             <VideoFeed />
           </div>
@@ -123,7 +122,7 @@ const Index = () => {
         return <NotificationsPage />;
       default:
         return (
-          <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-cyan-900 min-h-screen">
+          <div className="bg-gradient-to-br from-blue-900 via-purple-900 to-cyan-900 min-h-screen">
             <Stories />
             <VideoFeed />
           </div>
@@ -132,7 +131,7 @@ const Index = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-cyan-900 min-h-screen relative">
+    <div className="bg-gradient-to-br from-blue-900 via-purple-900 to-cyan-900 min-h-screen relative">
       <Header 
         onOpenPanel={() => setRightPanelOpen(true)}
       />
@@ -181,13 +180,6 @@ const Index = () => {
         onClose={() => setPolicyModal({ isOpen: false, type: null })}
         type={policyModal.type!}
       />
-
-      {rightPanelOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40"
-          onClick={() => setRightPanelOpen(false)}
-        />
-      )}
     </div>
   );
 };
