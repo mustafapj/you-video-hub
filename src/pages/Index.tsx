@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import VideoFeed from '../components/VideoFeed';
 import ExplorePage from '../components/ExplorePage';
-import UploadPage from '../components/UploadPage';
+import MobileUploadPage from '../components/MobileUploadPage';
 import NotificationsPage from '../components/NotificationsPage';
 import ProfilePage from '../components/ProfilePage';
 import RightSlidePanel from '../components/RightSlidePanel';
@@ -19,7 +20,6 @@ import AuthScreen from '../components/AuthScreen';
 import MessagesPage from '../components/MessagesPage';
 import BotSystem from '../components/BotSystem';
 import BotFather from '../components/BotFather';
-import MobileUploadPage from '../components/MobileUploadPage';
 import { DataManager } from '../utils/dataStorage';
 import { PermissionManager } from '../utils/permissions';
 import { FileManager } from '../utils/fileManager';
@@ -33,31 +33,26 @@ const Index = () => {
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
-  const [menuNotifications, setMenuNotifications] = useState(2); // إشعارات القائمة
+  const [menuNotifications, setMenuNotifications] = useState(2);
   const [policyModal, setPolicyModal] = useState<{ isOpen: boolean; type: 'terms' | 'privacy' | 'community' | null }>({
     isOpen: false,
     type: null
   });
 
   useEffect(() => {
-    // تهيئة النظام
     const initializeApp = async () => {
       const dataManager = DataManager.getInstance();
       const capacitorManager = CapacitorPermissionManager.getInstance();
       const fileManager = FileManager.getInstance();
       
-      // فحص الجلسة الحالية
       if (dataManager.isSessionValid()) {
         setCurrentScreen('app');
       }
       
-      // تحميل الملفات المحفوظة
       fileManager.loadFilesFromStorage();
       
-      // طلب الصلاحيات (للهاتف أو المتصفح)
       await capacitorManager.requestAllPermissions();
       
-      // إرسال إشعار ترحيب إذا كان التطبيق يعمل على الهاتف
       if (capacitorManager.isNative()) {
         await capacitorManager.sendLocalNotification(
           'مرحباً بك في YOU!',
@@ -73,7 +68,6 @@ const Index = () => {
     setStorageType(selectedStorageType);
     setCurrentScreen('auth');
     
-    // طلب الصلاحيات عند قبول الشروط
     const permissionManager = PermissionManager.getInstance();
     await permissionManager.requestAllPermissions();
   };
@@ -81,7 +75,6 @@ const Index = () => {
   const handleAuthComplete = () => {
     setCurrentScreen('app');
     
-    // إرسال إشعار ترحيب
     const permissionManager = PermissionManager.getInstance();
     permissionManager.sendNotification(
       'مرحباً بك في YOU!',
@@ -89,28 +82,23 @@ const Index = () => {
     );
   };
 
-  // Show welcome screen
   if (currentScreen === 'welcome') {
     return <WelcomeScreen onAccept={handleWelcomeAccept} />;
   }
 
-  // Show auth screen
   if (currentScreen === 'auth' && storageType) {
     return <AuthScreen storageType={storageType} onAuthComplete={handleAuthComplete} />;
   }
 
   const renderActiveComponent = () => {
-    // Handle settings
     if (showSettings) {
       return <SettingsPage onBack={() => setShowSettings(false)} />;
     }
 
-    // Handle messages page
     if (showMessages) {
       return <MessagesPage />;
     }
 
-    // Handle special features
     if (activeFeature === 'live') return <LiveStreaming />;
     if (activeFeature === 'randomCall') return <RandomCall />;
     if (activeFeature === 'subscriptions') return <SubscriptionTiers />;
@@ -119,11 +107,10 @@ const Index = () => {
     if (activeFeature === 'botfather') return <BotFather />;
     if (activeFeature === 'profile') return <ProfilePage />;
 
-    // Handle main tabs
     switch (activeTab) {
       case 'home':
         return (
-          <div>
+          <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-cyan-900 min-h-screen">
             <Stories />
             <VideoFeed />
           </div>
@@ -136,7 +123,7 @@ const Index = () => {
         return <NotificationsPage />;
       default:
         return (
-          <div>
+          <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-cyan-900 min-h-screen">
             <Stories />
             <VideoFeed />
           </div>
@@ -145,18 +132,15 @@ const Index = () => {
   };
 
   return (
-    <div className="bg-black min-h-screen relative">
-      {/* App Header */}
+    <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-cyan-900 min-h-screen relative">
       <Header 
         onOpenPanel={() => setRightPanelOpen(true)}
       />
 
-      {/* Main Content */}
       <main className="pt-16">
         {renderActiveComponent()}
       </main>
 
-      {/* Navigation with menu notifications */}
       <Navigation 
         activeTab={activeTab} 
         onTabChange={(tab) => {
@@ -169,7 +153,6 @@ const Index = () => {
         menuNotifications={menuNotifications}
       />
 
-      {/* Right Slide Panel */}
       <RightSlidePanel 
         isOpen={rightPanelOpen} 
         onClose={() => setRightPanelOpen(false)}
@@ -193,14 +176,12 @@ const Index = () => {
         }}
       />
 
-      {/* Policy Modal */}
       <PolicyModal
         isOpen={policyModal.isOpen}
         onClose={() => setPolicyModal({ isOpen: false, type: null })}
         type={policyModal.type!}
       />
 
-      {/* Overlay for right panel */}
       {rightPanelOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-40"

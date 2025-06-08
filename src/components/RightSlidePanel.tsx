@@ -12,28 +12,12 @@ interface RightSlidePanelProps {
 }
 
 const RightSlidePanel = ({ isOpen, onClose, onOpenSettings, onOpenPolicy, onOpenMessages, onSetFeature }: RightSlidePanelProps) => {
-  // الميزات الرئيسية المنقولة من الهيدر
   const mainFeatures = [
-    { icon: Video, label: 'البث المباشر', count: 0, action: 'live', color: 'bg-red-500' },
-    { icon: Phone, label: 'المكالمات العشوائية', count: 0, action: 'randomCall', color: 'bg-green-500' },
-    { icon: Crown, label: 'الاشتراك المميز', count: 0, action: 'subscriptions', color: 'bg-purple-500' },
-    { icon: Bot, label: 'بوت فادر', count: 0, action: 'botfather', color: 'bg-blue-500' },
-    { icon: User, label: 'الملف الشخصي', count: 0, action: 'profile', color: 'bg-pink-500' },
-  ];
-
-  const menuItems = [
-    { icon: MessageCircle, label: 'Direct Messages', count: 3, action: 'messages' },
-    { icon: FileText, label: 'Pages', count: 0, action: 'pages' },
-    { icon: Users, label: 'Groups', count: 2, action: 'groups' },
-    { icon: Radio, label: 'Channels', count: 1, action: 'channels' },
-    { icon: Settings, label: 'Settings', count: 0, action: 'settings' },
-    { icon: HelpCircle, label: 'Support', count: 0, action: 'support' },
-  ];
-
-  const policyItems = [
-    { icon: Shield, label: 'Terms & Conditions', action: () => onOpenPolicy?.('terms') },
-    { icon: Lock, label: 'Privacy Policy', action: () => onOpenPolicy?.('privacy') },
-    { icon: Users, label: 'Community Guidelines', action: () => onOpenPolicy?.('community') },
+    { icon: Video, label: 'الملف الشخصي', count: 0, action: 'profile', color: 'from-cyan-500 to-blue-500' },
+    { icon: Settings, label: 'الإعدادات', count: 0, action: 'settings', color: 'from-purple-500 to-pink-500' },
+    { icon: HelpCircle, label: 'المساعدة والدعم', count: 0, action: 'support', color: 'from-green-500 to-emerald-500' },
+    { icon: Crown, label: 'page (YMOE)', count: 0, action: 'subscriptions', color: 'from-yellow-500 to-orange-500' },
+    { icon: Radio, label: 'تحديد الهوية', count: 0, action: 'live', color: 'from-red-500 to-pink-500' },
   ];
 
   const handleMenuClick = (action: string) => {
@@ -48,80 +32,48 @@ const RightSlidePanel = ({ isOpen, onClose, onOpenSettings, onOpenPolicy, onOpen
   };
 
   return (
-    <div className={`fixed top-0 right-0 h-full w-80 bg-black/95 backdrop-blur-lg transform transition-transform duration-300 z-50 ${
+    <div className={`fixed top-0 right-0 h-full w-80 transform transition-transform duration-300 z-50 ${
       isOpen ? 'translate-x-0' : 'translate-x-full'
     }`}>
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold text-white">القائمة</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
-          >
-            ✕
-          </button>
-        </div>
+      {/* Curved Background Panel */}
+      <div className="h-full bg-gradient-to-br from-cyan-400 via-cyan-500 to-cyan-600 relative overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-20 right-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+        <div className="absolute bottom-40 left-5 w-24 h-24 bg-white/5 rounded-full blur-lg"></div>
         
-        {/* الميزات الرئيسية */}
-        <div className="space-y-4 mb-8">
-          <h3 className="text-lg font-semibold text-white mb-4">الميزات الرئيسية</h3>
-          {mainFeatures.map(({ icon: Icon, label, count, action, color }) => (
+        <div className="p-6 pt-16 h-full overflow-y-auto">
+          <div className="flex items-center justify-between mb-8">
             <button
-              key={label}
-              onClick={() => handleMenuClick(action)}
-              className="w-full flex items-center justify-between p-4 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 transition-colors"
+              onClick={onClose}
+              className="text-white/80 hover:text-white transition-colors text-2xl"
             >
-              <div className="flex items-center space-x-3">
-                <div className={`${color} p-2 rounded-lg`}>
-                  <Icon className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-white font-medium">{label}</span>
-              </div>
-              {count > 0 && (
-                <span className="bg-pink-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
-                  {count}
-                </span>
-              )}
+              ✕
             </button>
-          ))}
-        </div>
-
-        {/* Main Menu Items */}
-        <div className="space-y-4 mb-8">
-          <h3 className="text-lg font-semibold text-white mb-4">القائمة الرئيسية</h3>
-          {menuItems.map(({ icon: Icon, label, count, action }) => (
-            <button
-              key={label}
-              onClick={() => handleMenuClick(action)}
-              className="w-full flex items-center justify-between p-4 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <Icon className="w-6 h-6 text-pink-500" />
-                <span className="text-white font-medium">{label}</span>
-              </div>
-              {count > 0 && (
-                <span className="bg-pink-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
-                  {count}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-
-        {/* Policy Section */}
-        <div className="border-t border-gray-700 pt-6">
-          <h3 className="text-lg font-semibold text-white mb-4">القوانين والسياسات</h3>
-          <div className="space-y-3">
-            {policyItems.map(({ icon: Icon, label, action }) => (
+          </div>
+          
+          {/* Menu Items with Curved Design */}
+          <div className="space-y-4">
+            {mainFeatures.map(({ icon: Icon, label, action, color }) => (
               <button
                 key={label}
-                onClick={action}
-                className="w-full flex items-center space-x-3 p-3 rounded-lg bg-gray-800/30 hover:bg-gray-700/30 transition-colors"
+                onClick={() => handleMenuClick(action)}
+                className="w-full bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm rounded-2xl p-4 hover:from-white/30 hover:to-white/20 transition-all duration-200 border border-white/20"
               >
-                <Icon className="w-5 h-5 text-gray-400" />
-                <span className="text-gray-300 text-sm">{label}</span>
+                <div className="flex items-center space-x-4">
+                  <div className={`bg-gradient-to-r ${color} p-3 rounded-xl shadow-lg`}>
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="text-white font-medium text-lg flex-1 text-right">{label}</span>
+                </div>
               </button>
             ))}
+          </div>
+          
+          {/* Bottom decorative element */}
+          <div className="mt-12 text-center">
+            <div className="inline-block bg-white/20 rounded-full p-4 backdrop-blur-sm">
+              <div className="w-8 h-8 bg-gradient-to-r from-white/30 to-white/20 rounded-full"></div>
+            </div>
           </div>
         </div>
       </div>
