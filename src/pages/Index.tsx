@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
@@ -20,9 +19,11 @@ import AuthScreen from '../components/AuthScreen';
 import MessagesPage from '../components/MessagesPage';
 import BotSystem from '../components/BotSystem';
 import BotFather from '../components/BotFather';
+import MobileUploadPage from '../components/MobileUploadPage';
 import { DataManager } from '../utils/dataStorage';
 import { PermissionManager } from '../utils/permissions';
 import { FileManager } from '../utils/fileManager';
+import { CapacitorPermissionManager } from '../utils/capacitorPermissions';
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<'welcome' | 'auth' | 'app'>('welcome');
@@ -42,7 +43,7 @@ const Index = () => {
     // تهيئة النظام
     const initializeApp = async () => {
       const dataManager = DataManager.getInstance();
-      const permissionManager = PermissionManager.getInstance();
+      const capacitorManager = CapacitorPermissionManager.getInstance();
       const fileManager = FileManager.getInstance();
       
       // فحص الجلسة الحالية
@@ -53,8 +54,16 @@ const Index = () => {
       // تحميل الملفات المحفوظة
       fileManager.loadFilesFromStorage();
       
-      // طلب الصلاحيات الأساسية
-      await permissionManager.requestNotificationPermission();
+      // طلب الصلاحيات (للهاتف أو المتصفح)
+      await capacitorManager.requestAllPermissions();
+      
+      // إرسال إشعار ترحيب إذا كان التطبيق يعمل على الهاتف
+      if (capacitorManager.isNative()) {
+        await capacitorManager.sendLocalNotification(
+          'مرحباً بك في YOU!',
+          'تطبيق YOU جاهز للاستخدام على هاتفك'
+        );
+      }
     };
     
     initializeApp();
@@ -122,7 +131,7 @@ const Index = () => {
       case 'explore':
         return <ExplorePage />;
       case 'upload':
-        return <UploadPage />;
+        return <MobileUploadPage />;
       case 'notifications':
         return <NotificationsPage />;
       default:
