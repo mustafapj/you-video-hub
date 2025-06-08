@@ -1,4 +1,3 @@
-
 // نظام إدارة الملفات
 interface FileUploadOptions {
   maxSize: number; // بالبايت
@@ -292,4 +291,4 @@ export class FileManager {
   }
 }
 
-export { UploadedFile, FileUploadOptions };
+export type { UploadedFile, FileUploadOptions };

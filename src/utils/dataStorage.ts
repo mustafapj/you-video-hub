@@ -1,4 +1,3 @@
-
 // نظام حفظ البيانات المتقدم مشابه لفيسبوك
 interface UserData {
   id: string;
@@ -179,4 +178,4 @@ export class DataManager {
   }
 }
 
-export { UserData, UserSettings, UserActivity };
+export type { UserData, UserSettings, UserActivity };
