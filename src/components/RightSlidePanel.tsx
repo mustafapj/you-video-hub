@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MessageCircle, Users, FileText, Radio, Phone, Settings, HelpCircle, Shield, Lock, Bot, Video, Crown, User } from 'lucide-react';
+import { MessageCircle, Users, FileText, Radio, Phone, Settings, HelpCircle, Shield, Lock, Bot, Video, Crown, User, LogOut } from 'lucide-react';
 
 interface RightSlidePanelProps {
   isOpen: boolean;
@@ -16,8 +16,8 @@ const RightSlidePanel = ({ isOpen, onClose, onOpenSettings, onOpenPolicy, onOpen
     { icon: User, label: 'الملف الشخصي', count: 0, action: 'profile', color: 'from-blue-500 to-cyan-500' },
     { icon: Settings, label: 'الإعدادات', count: 0, action: 'settings', color: 'from-purple-500 to-pink-500' },
     { icon: HelpCircle, label: 'المساعدة والدعم', count: 0, action: 'support', color: 'from-green-500 to-emerald-500' },
-    { icon: Crown, label: 'الاشتراكات المدفوعة', count: 0, action: 'subscriptions', color: 'from-yellow-500 to-orange-500' },
-    { icon: Radio, label: 'البث المباشر', count: 0, action: 'live', color: 'from-red-500 to-pink-500' },
+    { icon: Crown, label: 'بيج YMOE', count: 0, action: 'ymoe', color: 'from-yellow-500 to-orange-500' },
+    { icon: LogOut, label: 'تسجيل الخروج', count: 0, action: 'logout', color: 'from-red-500 to-pink-500' },
   ];
 
   const handleMenuClick = (action: string) => {
@@ -45,7 +45,7 @@ const RightSlidePanel = ({ isOpen, onClose, onOpenSettings, onOpenPolicy, onOpen
       <div className={`fixed top-0 right-0 h-full w-80 transform transition-transform duration-300 z-50 ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
-        {/* Curved Background Panel matching the design */}
+        {/* Curved Background Panel */}
         <div className="h-full bg-gradient-to-br from-cyan-400 via-cyan-500 to-cyan-600 relative overflow-hidden rounded-l-[3rem] shadow-2xl">
           {/* Decorative curved elements */}
           <div className="absolute top-20 right-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
@@ -61,7 +61,7 @@ const RightSlidePanel = ({ isOpen, onClose, onOpenSettings, onOpenPolicy, onOpen
               </button>
             </div>
             
-            {/* Menu Items with design matching the image */}
+            {/* Menu Items */}
             <div className="space-y-4">
               {mainFeatures.map(({ icon: Icon, label, action, color }) => (
                 <button

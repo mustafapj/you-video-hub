@@ -19,6 +19,7 @@ import AuthScreen from '../components/AuthScreen';
 import MessagesPage from '../components/MessagesPage';
 import BotSystem from '../components/BotSystem';
 import BotFather from '../components/BotFather';
+import YmoePage from '../components/YmoePage';
 import { DataManager } from '../utils/dataStorage';
 import { PermissionManager } from '../utils/permissions';
 import { FileManager } from '../utils/fileManager';
@@ -32,6 +33,7 @@ const Index = () => {
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
+  const [showYmoe, setShowYmoe] = useState(false);
   const [menuNotifications, setMenuNotifications] = useState(2);
   const [policyModal, setPolicyModal] = useState<{ isOpen: boolean; type: 'terms' | 'privacy' | 'community' | null }>({
     isOpen: false,
@@ -98,6 +100,10 @@ const Index = () => {
       return <MessagesPage />;
     }
 
+    if (showYmoe) {
+      return <YmoePage onBack={() => setShowYmoe(false)} />;
+    }
+
     if (activeFeature === 'live') return <LiveStreaming />;
     if (activeFeature === 'randomCall') return <RandomCall />;
     if (activeFeature === 'subscriptions') return <SubscriptionTiers />;
@@ -147,6 +153,7 @@ const Index = () => {
           setActiveFeature(null);
           setShowSettings(false);
           setShowMessages(false);
+          setShowYmoe(false);
         }}
         onOpenPanel={() => setRightPanelOpen(true)}
         menuNotifications={menuNotifications}
@@ -168,7 +175,11 @@ const Index = () => {
           setRightPanelOpen(false);
         }}
         onSetFeature={(feature) => {
-          setActiveFeature(feature);
+          if (feature === 'ymoe') {
+            setShowYmoe(true);
+          } else {
+            setActiveFeature(feature);
+          }
           setShowSettings(false);
           setShowMessages(false);
           setRightPanelOpen(false);

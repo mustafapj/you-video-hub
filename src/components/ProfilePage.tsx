@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { User, Heart, Eye, Users, ArrowLeft } from 'lucide-react';
+import { User, Heart, Eye, Users, ArrowLeft, Camera, Home, MessageCircle, Users as GroupIcon, Radio, QrCode } from 'lucide-react';
 
 const ProfilePage = () => {
   const userStats = {
@@ -20,39 +20,71 @@ const ProfilePage = () => {
       <div className="px-4">
         {/* Header with back button */}
         <div className="flex items-center mb-6">
-          <button className="p-2 rounded-full bg-white/10 backdrop-blur-sm">
+          <button className="p-2 rounded-full bg-red-500">
             <ArrowLeft className="w-6 h-6 text-white" />
           </button>
           <h1 className="text-white text-xl font-bold mr-4">الملف الشخصي</h1>
         </div>
 
-        {/* Profile Section */}
-        <div className="text-center mb-8">
-          <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 flex items-center justify-center shadow-lg shadow-cyan-500/30">
-            <User size={40} className="text-white" />
+        {/* Big red rectangle with cyan background inside */}
+        <div className="bg-red-500 p-4 rounded-2xl mb-6">
+          <div className="bg-gradient-to-r from-cyan-400 to-blue-500 p-6 rounded-xl relative">
+            {/* Profile background and image */}
+            <div className="text-center mb-4">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 flex items-center justify-center shadow-lg shadow-cyan-500/30 relative">
+                <User size={40} className="text-white" />
+                {/* Two small cameras */}
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+                  <Camera size={14} className="text-white" />
+                </div>
+                <div className="absolute -bottom-2 -left-2 w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+                  <Camera size={14} className="text-white" />
+                </div>
+              </div>
+              
+              <h1 className="text-white text-xl font-bold mb-2">@your_username</h1>
+              <p className="text-cyan-100 text-sm mb-4">✨ إنشاء محتوى مذهل يومياً</p>
+              
+              {/* Stats */}
+              <div className="flex justify-center space-x-8 mb-4">
+                <div className="text-center">
+                  <div className="text-white text-lg font-bold">{userStats.followers.toLocaleString()}</div>
+                  <div className="text-cyan-100 text-sm">متابع</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-white text-lg font-bold">{userStats.following.toLocaleString()}</div>
+                  <div className="text-cyan-100 text-sm">يتابع</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-white text-lg font-bold">{userStats.likes.toLocaleString()}</div>
+                  <div className="text-cyan-100 text-sm">إعجاب</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <h1 className="text-white text-xl font-bold mb-2">@your_username</h1>
-          <p className="text-cyan-300 text-sm mb-4">✨ إنشاء محتوى مذهل يومياً</p>
-          
-          {/* Stats */}
-          <div className="flex justify-center space-x-8 mb-6">
-            <div className="text-center">
-              <div className="text-white text-lg font-bold">{userStats.followers.toLocaleString()}</div>
-              <div className="text-cyan-300 text-sm">متابع</div>
-            </div>
-            <div className="text-center">
-              <div className="text-white text-lg font-bold">{userStats.following.toLocaleString()}</div>
-              <div className="text-cyan-300 text-sm">يتابع</div>
-            </div>
-            <div className="text-center">
-              <div className="text-white text-lg font-bold">{userStats.likes.toLocaleString()}</div>
-              <div className="text-cyan-300 text-sm">إعجاب</div>
-            </div>
-          </div>
+        </div>
 
-          {/* Edit Profile Button */}
-          <button className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-full hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-200">
-            تعديل الملف الشخصي
+        {/* Five icons below the big camera */}
+        <div className="flex justify-around mb-6 bg-white/10 p-4 rounded-xl">
+          <button className="flex flex-col items-center">
+            <GroupIcon className="w-8 h-8 text-white mb-2" />
+            <span className="text-white text-xs">المجموعة</span>
+          </button>
+          <button className="flex flex-col items-center">
+            <Radio className="w-8 h-8 text-white mb-2" />
+            <span className="text-white text-xs">القنوات</span>
+          </button>
+          <button className="flex flex-col items-center">
+            <MessageCircle className="w-8 h-8 text-white mb-2" />
+            <span className="text-white text-xs">الرسائل</span>
+          </button>
+          <button className="flex flex-col items-center">
+            <Home className="w-8 h-8 text-white mb-2" />
+            <span className="text-white text-xs">المنزل</span>
+          </button>
+          <button className="flex flex-col items-center">
+            <QrCode className="w-8 h-8 text-white mb-2" />
+            <span className="text-white text-xs">QR</span>
           </button>
         </div>
 
@@ -66,7 +98,7 @@ const ProfilePage = () => {
           </button>
         </div>
 
-        {/* Video Grid - 3x3 layout to match the design */}
+        {/* Video Grid */}
         <div className="grid grid-cols-3 gap-3">
           {userVideos.map((video) => (
             <div
